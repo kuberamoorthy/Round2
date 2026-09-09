@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=0.9, maximum-scale=1.2"
+    />
+    <title>ConnectIQ — Connection Round</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #07111f;
+        --bg2: #0d1b2e;
+        --panel: rgba(15, 31, 52, 0.88);
+        --border: rgba(148, 163, 184, 0.2);
+        --text: #f8fafc;
+        --muted: #a9b7c9;
+        --primary: #22d3ee;
+        --primary2: #6366f1;
+        --danger: #fb7185;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        font-family: "Outfit", sans-serif;
+      }
+      body {
+        min-height: 100vh;
+        overflow: hidden;
+        color: var(--text);
+        background:
+          radial-gradient(
+            circle at 15% 10%,
+            rgba(34, 211, 238, 0.14),
+            transparent 32%
+          ),
+          radial-gradient(
+            circle at 85% 85%,
+            rgba(99, 102, 241, 0.18),
+            transparent 34%
+          ),
+          linear-gradient(135deg, var(--bg), var(--bg2));
+      }
+      .glass-panel {
+        background: var(--panel);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border);
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+      }
+      .text-gradient {
+        background: linear-gradient(90deg, #22d3ee, #818cf8);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .timer-card {
+        position: relative;
+        min-width: 118px;
+        padding: 10px 14px;
+        border-radius: 18px;
+        background: linear-gradient(
+          135deg,
+          rgba(15, 31, 52, 0.98),
+          rgba(20, 35, 58, 0.92)
+        );
+        border: 1px solid rgba(34, 211, 238, 0.25);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+      }
+      .timer-badge {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+      }
+      .timer-label {
+        font-size: 0.55rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        font-weight: 800;
+        color: #94a3b8;
+      }
+      .timer-value-wrap {
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+        gap: 4px;
+      }
+      #timer-display {
+        font-size: 2.25rem;
+        font-weight: 900;
+        line-height: 1;
+        color: #22d3ee;
+        text-shadow: 0 0 22px rgba(34, 211, 238, 0.25);
+      }
+      .timer-warning {
+        color: #fb7185 !important;
+        animation: timer-pop 0.7s ease-in-out infinite;
+      }
+      @keyframes timer-pop {
+        50% {
+          transform: scale(1.08);
+        }
+      }
+      @keyframes progress {
+        from {
+          width: 100%;
+        }
+        to {
+          width: 0;
+        }
+      }
+      .progress-active {
+        animation: progress 20s linear forwards;
+      }
+      .progress-active::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.35);
+        transform: translateX(-100%);
+        animation: shimmer 1.4s ease-in-out infinite;
+      }
+      @keyframes shimmer {
+        to {
+          transform: translateX(100%);
+        }
+      }
+      .reveal-enter {
+        opacity: 0;
+        transform: scale(0.97) translateY(12px);
+      }
+      .reveal-active {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .quiz-image-shell {
+        width: min(1100px, 92vw);
+        height: min(72vh, 720px);
+        padding: 12px;
+        border-radius: 28px;
+        background: rgba(10, 22, 38, 0.82);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.35);
+      }
+      .quiz-image-inner {
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+        overflow: hidden;
+        background: #020817;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(34, 211, 238, 0.12);
+      }
+      #question-image {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      .start-card,
+      .end-card {
+        width: min(650px, 92vw);
+        padding: 42px;
+        border-radius: 30px;
+        text-align: center;
+      }
+      .icon-box {
+        width: 74px;
+        height: 74px;
+        border-radius: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(
+          135deg,
+          rgba(34, 211, 238, 0.18),
+          rgba(99, 102, 241, 0.22)
+        );
+        border: 1px solid rgba(34, 211, 238, 0.28);
+        color: #67e8f9;
+      }
+      .primary-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        height: 56px;
+        padding: 0 30px;
+        border: 0;
+        border-radius: 16px;
+        background: linear-gradient(100deg, #0891b2, #4f46e5);
+        color: white;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        cursor: pointer;
+        box-shadow: 0 14px 35px rgba(79, 70, 229, 0.3);
+        transition: 0.2s ease;
+      }
+      .primary-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 42px rgba(34, 211, 238, 0.22);
+      }
+      .secondary-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--border);
+        color: #e2e8f0;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      @media (max-width: 700px) {
+        body {
+          overflow: auto;
+        }
+        header {
+          padding: 12px !important;
+        }
+        .header-right {
+          gap: 8px !important;
+        }
+        .counter {
+          padding: 8px 10px !important;
+        }
+        .counter span {
+          font-size: 0.78rem !important;
+        }
+        .timer-card {
+          min-width: 88px;
+          padding: 7px 9px;
+        }
+        #timer-display {
+          font-size: 1.7rem;
+        }
+        .quiz-image-shell {
+          height: 62vh;
+          padding: 8px;
+          border-radius: 20px;
+        }
+        .quiz-image-inner {
+          border-radius: 14px;
+        }
+        .start-card,
+        .end-card {
+          padding: 28px 20px;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="flex flex-col h-screen relative">
+    <!-- Header Area -->
+    <header
+      class="w-full px-4 md:px-8 py-4 flex items-center justify-between gap-4 z-10 sticky top-0"
+    >
+      <div class="flex items-center gap-3 min-w-0">
+        <div
+          class="w-11 h-11 rounded-2xl bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center shadow-lg shrink-0"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 text-white"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2.5"
+              d="M13 10V3L4 14h7v7l9-11h-7z"
+            />
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-xl md:text-2xl font-extrabold tracking-tight">
+            CONNECTION<span class="text-gradient">ROUND</span>
+          </h1>
+          <p
+            class="text-[10px] md:text-xs uppercase tracking-[.28em] text-slate-400 font-bold"
+          ></p>
+        </div>
+      </div>
+
+      <div class="header-right flex items-center gap-3 md:gap-5">
+        <div
+          class="counter flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-700/70 bg-slate-900/60"
+        >
+          <span class="text-cyan-400 font-bold">●</span>
+          <span
+            id="question-counter"
+            class="text-sm md:text-base font-bold text-slate-200 tracking-wide"
+            >Q: 1 / 14</span
+          >
+        </div>
+        <div class="timer-card">
+          <div class="timer-badge">
+            <span class="timer-label">Time left</span>
+            <div class="timer-value-wrap">
+              <span id="timer-display" class="font-mono">20</span>
+              <span class="text-sm font-bold text-slate-400">s</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Progress Bar Container -->
+    <div class="w-full h-1 bg-slate-800/80 relative z-10 overflow-hidden">
+      <div
+        id="progress-bar"
+        class="h-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 w-full"
+      ></div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main
+      class="flex-grow flex flex-col justify-center items-center px-4 py-6 md:px-8 relative z-10 w-full max-w-7xl mx-auto"
+    >
+      <!-- Start Screen -->
+      <div
+        id="start-screen"
+        class="absolute inset-0 flex flex-col items-center justify-center z-20 transition-opacity duration-500"
+      >
+        <div
+          class="glass-panel start-card flex flex-col items-center relative overflow-hidden"
+        >
+          <div class="icon-box mb-6">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-12 w-12"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </div>
+          <h2
+            class="text-4xl md:text-5xl font-extrabold mb-4 text-white tracking-tight"
+          >
+            CONNECTION <span class="text-slate-700">ROUND 2</span>
+          </h2>
+          <p
+            class="text-lg text-slate-300 mb-9 max-w-md font-normal leading-relaxed"
+          >
+            Identify the link between the images. You have exactly
+            <strong class="text-cyan-300 font-bold">20 seconds</strong> per
+            question.
+          </p>
+          <button id="start-btn" class="primary-btn">
+            <span class="mr-2">Start </span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Image Container -->
+      <div
+        id="image-container"
+        class="quiz-image-shell flex justify-center items-center overflow-hidden hidden transition-all duration-500 reveal-enter mx-auto my-auto"
+      >
+        <div class="quiz-image-inner relative">
+          <!-- Loading Spinner -->
+          <div
+            id="loading-spinner"
+            class="absolute inset-0 flex items-center justify-center z-0 bg-[#020817]"
+          >
+            <div
+              class="animate-spin rounded-full h-10 w-10 border-4 border-slate-700 border-t-cyan-400"
+            ></div>
+          </div>
+          <!-- The actual image -->
+          <img
+            id="question-image"
+            src=""
+            alt="Quiz Question"
+            class="block mx-auto my-auto z-10 opacity-0 transition-opacity duration-300 ease-in-out"
+          />
+        </div>
+      </div>
+
+      <!-- End Screen -->
+      <div
+        id="end-screen"
+        class="absolute inset-0 flex flex-col items-center justify-center z-20 hidden transition-opacity duration-500"
+      >
+        <div class="glass-panel end-card flex flex-col items-center mx-4">
+          <div class="icon-box mb-6">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-12 w-12"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </div>
+          <h2
+            class="text-4xl md:text-5xl font-extrabold mb-4 text-white tracking-tight"
+          >
+            Round Complete!
+          </h2>
+          <p class="text-lg text-slate-300 mb-9 font-normal">
+            Excellent work navigating the connections.
+          </p>
+          <button id="restart-btn" class="secondary-btn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 text-cyan-400"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            Restart Session
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Array of images provided
+      const questions = [
+        "Q1.jpeg",
+        "Q2.jpeg",
+        "Q3.jpeg",
+        "Q4.jpeg",
+        "Q5.jpeg",
+        "Q6.jpeg",
+        "Q7.jpeg",
+        "Q8.jpeg",
+        "Q9.jpeg",
+        "Q10.jpeg",
+        "Q11.jpeg",
+        "Q12.jpeg",
+        "Q13.jpeg",
+        "Q14.jpeg",
+      ];
+
+      const TIME_PER_QUESTION = 20; // Seconds
+      let currentQuestionIndex = 0;
+      let timerInterval;
+      let timeRemaining = TIME_PER_QUESTION;
+
+      // DOM Elements
+      const startScreen = document.getElementById("start-screen");
+      const startBtn = document.getElementById("start-btn");
+      const imageContainer = document.getElementById("image-container");
+      const questionImage = document.getElementById("question-image");
+      const loadingSpinner = document.getElementById("loading-spinner");
+      const endScreen = document.getElementById("end-screen");
+      const restartBtn = document.getElementById("restart-btn");
+      const timerDisplay = document.getElementById("timer-display");
+      const questionCounter = document.getElementById("question-counter");
+      const progressBar = document.getElementById("progress-bar");
+
+      // Initial setup
+      questionCounter.innerText = `Q: 1 / ${questions.length}`;
+
+      // Function to start the quiz
+      function startQuiz() {
+        startScreen.style.opacity = "0";
+        setTimeout(() => {
+          startScreen.classList.add("hidden");
+          startScreen.style.opacity = "1";
+
+          imageContainer.classList.remove("hidden");
+          requestAnimationFrame(() => {
+            imageContainer.classList.add("reveal-active");
+            imageContainer.classList.remove("reveal-enter");
+          });
+
+          currentQuestionIndex = 0;
+          loadQuestion();
+        }, 500);
+      }
+
+      // Function to load a specific question
+      function loadQuestion() {
+        if (currentQuestionIndex >= questions.length) {
+          endQuiz();
+          return;
+        }
+
+        questionCounter.innerText = `Q: ${currentQuestionIndex + 1} / ${questions.length}`;
+
+        questionImage.classList.remove("opacity-100");
+        questionImage.classList.add("opacity-0");
+        loadingSpinner.style.display = "flex";
+
+        setTimeout(() => {
+          questionImage.src = questions[currentQuestionIndex];
+
+          questionImage.onload = () => {
+            loadingSpinner.style.display = "none";
+            questionImage.classList.remove("opacity-0");
+            questionImage.classList.add("opacity-100");
+
+            resetTimer();
+            startTimer();
+          };
+
+          questionImage.onerror = () => {
+            loadingSpinner.style.display = "none";
+            questionImage.alt = "Failed to load image.";
+            questionImage.classList.remove("opacity-0");
+            questionImage.classList.add("opacity-100");
+            resetTimer();
+            startTimer();
+          };
+        }, 300);
+      }
+
+      function startTimer() {
+        timeRemaining = TIME_PER_QUESTION;
+        updateTimerDisplay();
+
+        progressBar.classList.remove("progress-active");
+        void progressBar.offsetWidth; // trigger reflow
+        progressBar.classList.add("progress-active");
+
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+          timeRemaining--;
+          updateTimerDisplay();
+
+          if (timeRemaining <= 0) {
+            clearInterval(timerInterval);
+
+            imageContainer.style.transform = "scale(0.99)";
+            setTimeout(() => {
+              imageContainer.style.transform = "scale(1)";
+              nextQuestion();
+            }, 150);
+          }
+        }, 1000);
+      }
+
+      function updateTimerDisplay() {
+        timerDisplay.innerText = timeRemaining;
+
+        if (timeRemaining <= 5) {
+          timerDisplay.classList.add("timer-warning");
+          timerDisplay.classList.remove("text-slate-800", "text-rose-600");
+        } else {
+          timerDisplay.classList.remove("timer-warning");
+          timerDisplay.classList.add("text-cyan-400");
+        }
+      }
+
+      function resetTimer() {
+        clearInterval(timerInterval);
+        progressBar.classList.remove("progress-active");
+      }
+
+      function nextQuestion() {
+        currentQuestionIndex++;
+        loadQuestion();
+      }
+
+      function endQuiz() {
+        resetTimer();
+
+        imageContainer.classList.remove("reveal-active");
+        imageContainer.classList.add("reveal-enter");
+
+        setTimeout(() => {
+          imageContainer.classList.add("hidden");
+
+          endScreen.classList.remove("hidden");
+          endScreen.style.opacity = "0";
+
+          requestAnimationFrame(() => {
+            endScreen.style.opacity = "1";
+          });
+        }, 500);
+      }
+
+      function restartQuiz() {
+        endScreen.style.opacity = "0";
+
+        setTimeout(() => {
+          endScreen.classList.add("hidden");
+
+          startScreen.classList.remove("hidden");
+          startScreen.style.opacity = "0";
+
+          requestAnimationFrame(() => {
+            startScreen.style.opacity = "1";
+          });
+
+          questionImage.src = "";
+          questionCounter.innerText = `Q: 1 / ${questions.length}`;
+          timerDisplay.innerText = TIME_PER_QUESTION;
+          timerDisplay.classList.remove(
+            "timer-warning",
+            "text-rose-600",
+            "text-cyan-400",
+          );
+          timerDisplay.classList.add("text-cyan-400");
+        }, 500);
+      }
+
+      // Event Listeners
+      startBtn.addEventListener("click", startQuiz);
+      restartBtn.addEventListener("click", restartQuiz);
+    </script>
+  </body>
+</html>
