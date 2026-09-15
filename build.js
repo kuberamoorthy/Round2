@@ -1,11 +1,16 @@
-<!doctype html>
+const fs = require("fs");
+const amp = String.fromCharCode(38);
+const file = "c:/Users/acer/OneDrive/Desktop/round2/index.html";
+const fontLink = "https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800;900" + amp + "family=Plus+Jakarta+Sans:wght@700;800" + amp + "family=Space+Grotesk:wght@700;800" + amp + "display=swap";
+
+const html = `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Connection Round 2</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></` + `script>
+<link href="${fontLink}" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{min-height:100%;font-family:Outfit,sans-serif;background:#070b14;color:#f8fafc;}
@@ -47,13 +52,16 @@ body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(
 .cbl{bottom:8px;left:8px;border-bottom:2px solid #38bdf8;border-left:2px solid #38bdf8;border-bottom-left-radius:6px;filter:drop-shadow(0 0 5px rgba(56,189,248,.7));}
 .cbr{bottom:8px;right:8px;border-bottom:2px solid #60a5fa;border-right:2px solid #60a5fa;border-bottom-right-radius:6px;filter:drop-shadow(0 0 5px rgba(96,165,250,.7));}
 #bo{transition:opacity .35s,transform .35s;}.bov{opacity:1!important;pointer-events:auto!important;transform:scale(1)!important;}.boh{opacity:0!important;pointer-events:none!important;transform:scale(.96)!important;}
-.cb{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 22px;border-radius:14px;font-family:Outfit,sans-serif;font-weight:700;font-size:.9rem;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:all .22s;user-select:none;}
+.cb{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 18px;border-radius:14px;font-family:Outfit,sans-serif;font-weight:700;font-size:.85rem;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:all .22s;user-select:none;width:100%;}
 .cbp{background:linear-gradient(135deg,#2563eb,#1d4ed8);border:1.5px solid rgba(96,165,250,.45);color:#fff;box-shadow:0 8px 25px rgba(37,99,235,.35),inset 0 1px 0 rgba(255,255,255,.25);}
-.cbp:hover:not(:disabled){background:linear-gradient(135deg,#3b82f6,#2563eb);transform:translateY(-2px);}
+.cbp:hover:not(:disabled){background:linear-gradient(135deg,#3b82f6,#2563eb);transform:scale(1.03);}
 .cbp.paused{background:linear-gradient(135deg,#d97706,#b45309)!important;border-color:rgba(251,191,36,.65)!important;}
 .cbs{background:rgba(15,23,42,.88);border:1.5px solid rgba(59,130,246,.3);color:#93c5fd;box-shadow:0 6px 20px rgba(0,0,0,.45);}
-.cbs:hover:not(:disabled){background:rgba(30,41,59,.95);border-color:#60a5fa;color:#fff;transform:translateY(-2px);}
+.cbs:hover:not(:disabled){background:rgba(30,41,59,.95);border-color:#60a5fa;color:#fff;transform:scale(1.03);}
 .cb:disabled{opacity:.35;cursor:not-allowed;pointer-events:none;}
+.quiz-row{display:flex;align-items:center;gap:14px;width:100%;max-width:min(1280px,98vw);}
+.ctrl-panel{display:flex;flex-direction:column;gap:10px;flex-shrink:0;width:110px;}
+.img-wrap{flex:1;min-width:0;}
 .qj{width:40px;height:40px;border-radius:12px;font-family:Space Grotesk,monospace;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(59,130,246,.3);background:rgba(15,23,42,.85);color:#93c5fd;}
 .qj:hover{background:rgba(37,99,235,.35);border-color:#60a5fa;color:#fff;transform:scale(1.08);}
 .qj.active{background:linear-gradient(135deg,#2563eb,#1d4ed8);border-color:#60a5fa;color:#fff;box-shadow:0 0 18px rgba(59,130,246,.6);}
@@ -122,32 +130,38 @@ body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(
       <div class="rb"><svg class="h-4 w-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg><span><strong class="text-green-300">10 questions</strong> per round</span></div>
     </div>
   </div>
-  <div id="jbar" class="hidden w-full flex flex-col items-center gap-2 mb-4">
+  <div id="jbar" class="hidden w-full flex flex-col items-center gap-2 mb-3">
     <p class="text-[10px] uppercase tracking-[.3em] text-slate-400 font-bold">Jump to Question</p>
     <div id="jbtns" class="flex flex-wrap gap-2 justify-center"></div>
   </div>
-  <div id="ic" class="is hidden mx-auto" style="opacity:0;transform:scale(.97) translateY(14px);transition:opacity .5s,transform .5s;">
-    <div class="ca ctl"></div><div class="ca ctr"></div><div class="ca cbl"></div><div class="ca cbr"></div>
-    <div id="bo" class="boh absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/85 backdrop-blur-md rounded-3xl p-6 text-center">
-      <div class="flex flex-col items-center max-w-xs w-full">
-        <div class="relative mb-4 flex items-center justify-center">
-          <div class="absolute inset-0 rounded-full bg-amber-500/25 blur-xl animate-pulse"></div>
-          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-[0_0_25px_rgba(245,158,11,.5)]"><svg class="h-8 w-8 text-slate-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></div>
+  <div id="quizrow" class="quiz-row hidden">
+    <!-- LEFT: Control Panel -->
+    <div id="ctlbar" class="ctrl-panel">
+      <button id="bbk" class="cb cbs"><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>Back</button>
+      <button id="bpp" class="cb cbp"><span id="ppic"></span><span id="pptx">Stop</span></button>
+      <button id="bhm" class="cb cbs"><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>Home</button>
+      <button id="bnx" class="cb cbs"><span id="nxtx">Next</span><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+    <!-- RIGHT: Image -->
+    <div class="img-wrap">
+      <div id="ic" class="is" style="opacity:0;transform:scale(.97) translateY(14px);transition:opacity .5s,transform .5s;width:100%;">
+        <div class="ca ctl"></div><div class="ca ctr"></div><div class="ca cbl"></div><div class="ca cbr"></div>
+        <div id="bo" class="boh absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/85 backdrop-blur-md rounded-3xl p-6 text-center">
+          <div class="flex flex-col items-center max-w-xs w-full">
+            <div class="relative mb-4 flex items-center justify-center">
+              <div class="absolute inset-0 rounded-full bg-amber-500/25 blur-xl animate-pulse"></div>
+              <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-[0_0_25px_rgba(245,158,11,.5)]"><svg class="h-8 w-8 text-slate-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></div>
+            </div>
+            <p class="text-[11px] uppercase tracking-[.3em] text-amber-400 font-bold mb-1">Answer Phase</p>
+            <h3 class="text-2xl md:text-3xl font-black text-white mb-2" style="font-family:Plus Jakarta Sans,sans-serif;">Write Your Answer!</h3>
+            <p class="text-sm text-slate-300 mb-4">Note down your answer before the next question.</p>
+            <div class="flex items-baseline justify-center gap-2 mb-5 px-6 py-2 rounded-2xl bg-slate-900/80 border border-amber-500/30"><span id="bcd" class="font-mono text-5xl md:text-6xl font-black text-amber-400" style="text-shadow:0 0 25px rgba(251,191,36,.7)">5</span><span class="text-xs uppercase tracking-widest text-amber-300/80 font-bold">s</span></div>
+            <button id="sk" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-amber-300 hover:text-white bg-amber-500/10 hover:bg-amber-500/25 border border-amber-500/30 transition-all cursor-pointer">Skip Break <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></button>
+          </div>
         </div>
-        <p class="text-[11px] uppercase tracking-[.3em] text-amber-400 font-bold mb-1">Answer Phase</p>
-        <h3 class="text-2xl md:text-3xl font-black text-white mb-2" style="font-family:Plus Jakarta Sans,sans-serif;">Write Your Answer!</h3>
-        <p class="text-sm text-slate-300 mb-4">Note down your answer before the next question.</p>
-        <div class="flex items-baseline justify-center gap-2 mb-5 px-6 py-2 rounded-2xl bg-slate-900/80 border border-amber-500/30"><span id="bcd" class="font-mono text-5xl md:text-6xl font-black text-amber-400" style="text-shadow:0 0 25px rgba(251,191,36,.7)">5</span><span class="text-xs uppercase tracking-widest text-amber-300/80 font-bold">s</span></div>
-        <button id="sk" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-amber-300 hover:text-white bg-amber-500/10 hover:bg-amber-500/25 border border-amber-500/30 transition-all cursor-pointer">Skip Break <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></button>
+        <div class="ii"><div id="ldr" class="absolute inset-0 flex flex-col items-center justify-center bg-[#03060c] z-10"><div class="animate-spin rounded-full h-12 w-12 border-[3px] border-slate-800 border-t-blue-500 border-r-sky-400"></div><span class="mt-3 text-xs tracking-widest uppercase text-blue-400/80">Loading...</span></div><img id="qi" src="" alt="Question" style="display:block;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .3s;"/></div>
       </div>
     </div>
-    <div class="ii"><div id="ldr" class="absolute inset-0 flex flex-col items-center justify-center bg-[#03060c] z-10"><div class="animate-spin rounded-full h-12 w-12 border-[3px] border-slate-800 border-t-blue-500 border-r-sky-400"></div><span class="mt-3 text-xs tracking-widest uppercase text-blue-400/80">Loading...</span></div><img id="qi" src="" alt="Question" style="display:block;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .3s;"/></div>
-  </div>
-  <div id="ctlbar" class="hidden flex items-center justify-center gap-3 md:gap-4 mt-5 z-20">
-    <button id="bbk" class="cb cbs"><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>Back</button>
-    <button id="bpp" class="cb cbp"><span id="ppic"></span><span id="pptx">Stop</span></button>
-    <button id="bhm" class="cb cbs"><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>Home</button>
-    <button id="bnx" class="cb cbs"><span id="nxtx">Next</span><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></button>
   </div>
   <div id="esc" class="absolute inset-0 flex flex-col items-center justify-center z-30 hidden">
     <div class="glass flex flex-col items-center text-center w-[min(680px,92vw)] p-10 md:p-14 rounded-[30px] mx-4" id="ecd" style="opacity:0;transition:opacity .4s;">
@@ -199,4 +213,7 @@ function restR(){ecd.style.opacity="0";setTimeout(()=>{esc.classList.add("hidden
 window.addEventListener("keydown",e=>{if(iC.classList.contains("hidden"))return;if(e.code==="Space"){e.preventDefault();togPP();}else if(e.key==="ArrowLeft"){e.preventDefault();prevQ();}else if(e.key==="ArrowRight"){e.preventDefault();nxtQ();}});
 </script>
 </body>
-</html>
+</html>`;
+
+fs.writeFileSync(file, html, "utf8");
+console.log("Written! Size:", fs.statSync(file).size);

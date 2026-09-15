@@ -157,6 +157,23 @@ body::before {
   animation: exec-alarm 0.6s ease-in-out infinite alternate;
 }
 
+.timer-break {
+  color: #fbbf24 !important;
+  text-shadow: 
+    0 0 30px rgba(245, 158, 11, 0.8),
+    0 0 50px rgba(217, 119, 6, 0.5) !important;
+  animation: exec-break-pulse 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes exec-break-pulse {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.06);
+  }
+}
+
 @keyframes exec-alarm {
   0% {
     transform: scale(1);
@@ -176,8 +193,23 @@ body::before {
   }
 }
 
+@keyframes progress-break {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
 .progress-active {
   animation: progress 20s linear forwards;
+}
+
+.progress-break-active {
+  animation: progress-break 5s linear forwards !important;
+  background: linear-gradient(90deg, #b45309, #d97706, #f59e0b, #fde68a) !important;
+  box-shadow: 0 0 18px rgba(245, 158, 11, 0.7) !important;
 }
 
 .exec-progress-bar {
@@ -210,7 +242,7 @@ body::before {
 /* Executive Presentation Shell */
 .quiz-image-shell {
   width: min(1180px, 94vw);
-  height: min(74vh, 760px);
+  height: min(68vh, 660px);
   padding: 14px;
   border-radius: 26px;
   background: linear-gradient(160deg, rgba(17, 24, 39, 0.95), rgba(8, 12, 22, 0.98));
@@ -431,4 +463,86 @@ body::before {
   .end-card {
     padding: 30px 18px;
   }
+}
+
+/* Break Overlay Styles */
+.break-overlay {
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.break-overlay-visible {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transform: scale(1) !important;
+}
+.break-overlay-hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: scale(0.96) !important;
+}
+
+/* Control Bar & Buttons */
+.control-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 24px;
+  border-radius: 14px;
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.control-btn-primary {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  border: 1.5px solid rgba(96, 165, 250, 0.45);
+  color: #ffffff;
+  box-shadow: 
+    0 8px 25px rgba(37, 99, 235, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.control-btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 30px rgba(59, 130, 246, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.control-btn-primary.paused {
+  background: linear-gradient(135deg, #d97706, #b45309) !important;
+  border-color: rgba(251, 191, 36, 0.65) !important;
+  box-shadow: 
+    0 0 30px rgba(245, 158, 11, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+.control-btn-secondary {
+  background: rgba(15, 23, 42, 0.88);
+  border: 1.5px solid rgba(59, 130, 246, 0.3);
+  color: #93c5fd;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+}
+
+.control-btn-secondary:hover:not(:disabled) {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: #60a5fa;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+.control-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: grayscale(0.6);
 }
