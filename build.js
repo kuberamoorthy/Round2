@@ -41,7 +41,7 @@ body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(
 @keyframes al{to{transform:scale(1.12)}}@keyframes bp{to{transform:scale(1.06)}}
 #pb{height:100%;background:linear-gradient(90deg,#1d4ed8,#2563eb,#38bdf8,#93c5fd);box-shadow:0 0 16px rgba(59,130,246,.6);position:relative;overflow:hidden;}
 #pb::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);transform:translateX(-100%);animation:sh2 1.6s ease-in-out infinite;}@keyframes sh2{to{transform:translateX(100%)}}
-.pbr{animation:pbrun 20s linear forwards;}.pbb{animation:pbbrk 5s linear forwards!important;background:linear-gradient(90deg,#b45309,#f59e0b,#fde68a)!important;box-shadow:0 0 18px rgba(245,158,11,.7)!important;}
+.pbr{animation:pbrun 25s linear forwards;}.pbb{animation:pbbrk 5s linear forwards!important;background:linear-gradient(90deg,#b45309,#f59e0b,#fde68a)!important;box-shadow:0 0 18px rgba(245,158,11,.7)!important;}
 @keyframes pbrun{from{width:100%}to{width:0%}}@keyframes pbbrk{from{width:100%}to{width:0%}}
 .is{width:100%;height:min(55vh,520px);padding:10px;border-radius:22px;background:linear-gradient(160deg,rgba(17,24,39,.95),rgba(8,12,22,.98));border:1px solid rgba(59,130,246,.28);box-shadow:0 25px 60px rgba(0,0,0,.85),inset 0 1px 1px rgba(255,255,255,.16);position:relative;}
 .ii{width:100%;height:100%;border-radius:14px;overflow:hidden;background:#03060c;display:flex;align-items:center;justify-content:center;position:relative;}
@@ -111,7 +111,7 @@ body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(
         <p class="text-[10px] uppercase tracking-[.3em] text-blue-400 font-bold mb-2">Round 2 Classic</p>
         <h3 class="text-2xl md:text-3xl font-black text-white mb-3" style="font-family:Plus Jakarta Sans,sans-serif;">Connection<br><span class="gt">Round</span></h3>
         <p class="text-sm text-slate-300 mb-5 leading-relaxed">Look at the images and identify the hidden <strong class="text-blue-300">connection</strong> linking them.</p>
-        <div class="flex items-center gap-3 text-xs text-slate-400 mb-6 flex-wrap justify-center"><span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span>10 Questions</span><span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-cyan-400 inline-block"></span>20s / Q</span><span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span>5s Break</span></div>
+        <div class="flex items-center gap-3 text-xs text-slate-400 mb-6 flex-wrap justify-center"><span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span>10 Questions</span><span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-cyan-400 inline-block"></span>25s / Q</span><span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span>5s Break</span></div>
         <button class="xb">Begin Round <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></button>
       </div>
       <div class="w-12 h-12 rounded-full bg-slate-800/80 border border-slate-600/50 flex items-center justify-center"><span class="text-slate-400 font-black text-sm">OR</span></div>
@@ -120,12 +120,12 @@ body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(
         <p class="text-[10px] uppercase tracking-[.3em] text-purple-400 font-bold mb-2">Round 2 Tech</p>
         <h3 class="text-2xl md:text-3xl font-black text-white mb-3" style="font-family:Plus Jakarta Sans,sans-serif;">Tech<br><span style="background:linear-gradient(135deg,#fff,#c4b5fd,#8b5cf6,#6d28d9);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">Connection</span></h3>
         <p class="text-sm text-slate-300 mb-5 leading-relaxed">Look at <strong class="text-purple-300">two images</strong> and guess the <strong class="text-purple-300">tech-related word</strong> connecting them!</p>
-        <div class="flex items-center gap-3 text-xs text-slate-400 mb-6 flex-wrap justify-center"><span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-purple-400 inline-block"></span>10 Questions</span><span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-cyan-400 inline-block"></span>20s / Q</span><span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span>5s Break</span></div>
+        <div class="flex items-center gap-3 text-xs text-slate-400 mb-6 flex-wrap justify-center"><span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-purple-400 inline-block"></span>10 Questions</span><span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-cyan-400 inline-block"></span>25s / Q</span><span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span>5s Break</span></div>
         <button class="pb2">Begin Tech <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></button>
       </div>
     </div>
     <div class="flex flex-wrap gap-3 justify-center">
-      <div class="rb"><svg class="h-4 w-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span><strong class="text-blue-300">20 seconds</strong> per question</span></div>
+      <div class="rb"><svg class="h-4 w-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span><strong class="text-blue-300">25 seconds</strong> per question</span></div>
       <div class="rb"><svg class="h-4 w-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg><span><strong class="text-amber-300">5s break</strong> to write answer</span></div>
       <div class="rb"><svg class="h-4 w-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg><span><strong class="text-green-300">10 questions</strong> per round</span></div>
     </div>
@@ -179,7 +179,7 @@ body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(
 </main>
 <script>
 const ROUNDS={connection:{label:"Connection Round",sub:"ROUND 2",qs:["Q1.jpeg","Q2.jpeg","Q3.jpeg","Q4.jpeg","Q5.jpeg","Q6.jpeg","Q7.jpeg","Q8.jpeg","Q9.jpeg","Q10.jpeg"],tech:false},tech:{label:"TECH CONNECTION",sub:"TECH ROUND",qs:["Q11.jpg","Q12.jpg","Q13.jpg","Q14.png","Q15.png","Q16.png","Q17.jpg","Q18.jpg","Q19.jpg","Q20.jpg"],tech:true}};
-const TQ=20,TB=5;let rnd=null,qs=[],qi=0,tI,bI,tr=TQ,isBrk=false,paused=false;
+const TQ=25,TB=5;let rnd=null,qs=[],qi=0,tI,bI,tr=TQ,isBrk=false,paused=false;
 const SIC='<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
 const PIC='<svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
 const el=id=>document.getElementById(id);
